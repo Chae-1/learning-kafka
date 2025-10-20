@@ -1,12 +1,18 @@
 package com.example.kafka;
 
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class SimpleProducer {
+public class SimpleProducerSync {
+
+    public static final Logger logger = LoggerFactory.getLogger(SimpleProducerSync.class.getName());
 
     public static final String SERVER_IP = "192.168.56.101:9092";
 
@@ -29,10 +35,19 @@ public class SimpleProducer {
         ProducerRecord<String, String> record = new ProducerRecord<>(topicName, "id-001", "hello world2");
 
         // KafkaProducer message send
-        producer.send(record, (meta, ex) -> System.out.println());
+        try {
+            RecordMetadata recordMetadata = producer.send(record).get();
+            logger.info(
+                    "\n ###### record metadata received ###### \n" +
+                            "partition: " + recordMetadata.partition() +
+                            "offset: " + recordMetadata.offset() +
+                            "timestamp: " + recordMetadata.timestamp()
+            );
 
-        producer.flush();
-        producer.close();
-
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            producer.close();
+        }
     }
 }
