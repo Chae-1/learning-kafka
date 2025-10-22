@@ -49,7 +49,7 @@ public class PizzaMessage {
         //System.out.println(message);
         HashMap<String, String> messageMap = new HashMap<>();
         messageMap.put("key", shopId);
-        messageMap.put("message", message);
+        messageMap.put("value", message);
 
         return messageMap;
     }
