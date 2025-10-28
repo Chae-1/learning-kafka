@@ -13,11 +13,11 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PizzaProducer {
+public class PizzaProducerCustomPartitioner {
 
     public static final String SERVER_IP = "192.168.56.101:9092";
 
-    public static final Logger logger = LoggerFactory.getLogger(PizzaProducer.class.getName());
+    public static final Logger logger = LoggerFactory.getLogger(PizzaProducerCustomPartitioner.class.getName());
 
     public static void sendPizzaMessage(KafkaProducer<String, String> kafkaProducer,
                                         String topicName, int iterCount,
@@ -97,8 +97,8 @@ public class PizzaProducer {
 //        props.put(ProducerConfig.ACKS_CONFIG, "0");
 //        props.put(ProducerConfig.LINGER_MS_CONFIG, "20");
 //        props.put(ProducerConfig.BATCH_SIZE_CONFIG, "32000");
-
-
+        props.setProperty(ProducerConfig.PARTITIONER_CLASS_CONFIG, "com.example.kafka.CustomPartitioner");
+        props.setProperty("custom.specialKey", "P001");
 
         //KafkaProducer Object creation
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
