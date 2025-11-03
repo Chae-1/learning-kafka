@@ -104,9 +104,9 @@ public class PizzaProducer {
         KafkaProducer<String, String> producer = new KafkaProducer<>(props);
 
         //ProducerRecord Object creation
-        sendPizzaMessage(producer, topicName, -1, 5000, 0, 0, true);
+        sendPizzaMessage(producer, topicName, -1, 1000, 0, 0, true);
 
-        Thread.sleep(3000);
+        producer.close();
 
     }
 }

@@ -24,8 +24,10 @@ public class SimpleConsumer {
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.56.101:9092");
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "group_01");
-        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "simple-group");
+//        properties.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, "5000");
+        properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "45000");
+//        properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "600000");
 
         try (KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties)) {
             kafkaConsumer.subscribe(List.of(topicName));
