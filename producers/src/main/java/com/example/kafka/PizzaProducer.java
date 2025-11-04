@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class PizzaProducer {
 
-    public static final String SERVER_IP = "192.168.56.101:9092";
+    public static final String SERVER_IP = "192.168.0.57:9092";
 
     public static final Logger logger = LoggerFactory.getLogger(PizzaProducer.class.getName());
 

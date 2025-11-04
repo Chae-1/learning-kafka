@@ -22,11 +22,11 @@ public class ConsumerWakeupV2 {
         String topicName = "pizza-topic";
 
         Properties properties = new Properties();
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.56.101:9092");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.57:9092");
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "group_02");
-        properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "60000");
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "group_03");
+        // properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "60000");
 
         KafkaConsumer<String, String> kafkaConsumer = new KafkaConsumer<>(properties);
         kafkaConsumer.subscribe(List.of(topicName));
