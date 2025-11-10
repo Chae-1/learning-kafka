@@ -32,10 +32,10 @@ public class FileEventHandler implements EventHandler {
             logResult(recordMetadata);
         } else {
             kafkaProducer.send(producerRecord, (recordMetadata, exception) -> {
-                if (exception != null) {
+                if (exception == null) {
                     logResult(recordMetadata);
                 } else {
-                    log.info("", exception);
+                    log.info("{}", exception.getMessage());
                 }
             });
         }

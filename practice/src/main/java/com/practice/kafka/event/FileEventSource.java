@@ -38,12 +38,34 @@ public class FileEventSource implements Runnable {
                     readAppendAndSend();
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException | IOException e) {
             log.error(e.getMessage(), e);
         }
     }
 
-    private void readAppendAndSend() throws ExecutionException, IOException {
+    private void readAppendAndSend() throws ExecutionException, IOException, InterruptedException {
         RandomAccessFile raf = new RandomAccessFile(this.file, "r");
+        raf.seek(this.filePointer);
+        String line = null;
+        while ((line = raf.readLine()) != null) {
+            sendMessage(line);
+        }
+        // file이 변경되었으므로 file의 filePointer를 현재 file의 마지막으로 재설정한다.
+        this.filePointer = raf.getFilePointer();
+    }
+
+    private void sendMessage(String line) throws ExecutionException, InterruptedException {
+        String[] tokens = line.split(",");
+        String key = tokens[0];
+        StringBuffer value = new StringBuffer();
+        for (int i = 1; i < tokens.length; i++) {
+            if (i != tokens.length - 1) {
+                value.append(tokens[i]).append(",");
+            } else {
+                value.append(tokens[i]);
+            }
+        }
+        MessageEvent messageEvent = new MessageEvent(key, value.toString());
+        this.eventHandler.onMessage(messageEvent);
     }
 }
